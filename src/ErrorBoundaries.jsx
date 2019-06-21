@@ -1,5 +1,7 @@
 import * as React from 'react'
 import PropTypes from "prop-types"
+import * as Sentry from '@sentry/browser';
+import './ErrorBoundaries.css'
 
 export default class ErrorBoundaries extends React.Component {
 
@@ -8,7 +10,7 @@ export default class ErrorBoundaries extends React.Component {
       }
 
     constructor(props) {
-    super(props)
+        super(props)
         this.state = { errorJustHappened: false }
     }
     
@@ -17,6 +19,7 @@ export default class ErrorBoundaries extends React.Component {
     }
         
     componentDidCatch(error, info) {
+        Sentry.captureException(error);
         console.log("This is ErrorBoundary logging an error:")
         console.log(error, info)
     }
@@ -27,7 +30,7 @@ export default class ErrorBoundaries extends React.Component {
 
         if (errorJustHappened) {
             return (
-                <div className="container">
+                <div className="ErrorBoundaries">
                     {"Error"}
                 </div>
             )
